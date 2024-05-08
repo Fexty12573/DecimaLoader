@@ -116,13 +116,13 @@ bool run() {
             const auto module = LoadLibraryW(entry.path().c_str());
             if (!module) {
                 spdlog::error("Failed to load plugin: {}", entry.path().filename().string());
-                return false;
+                continue;
             }
 
             const auto init = (void(*)(PluginInitializeOptions*))GetProcAddress(module, "plugin_initialize");
             if (!init) {
                 spdlog::error("Failed to find plugin_initialize in: {}", entry.path().filename().string());
-                return false;
+                continue;
             }
 
             PluginInitializeOptions options = {};

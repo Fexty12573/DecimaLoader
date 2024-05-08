@@ -1,0 +1,9 @@
+Package: minhook
+Version: 1.3.3
+Port-Version: 4
+Depends: vcpkg-cmake:x64-windows, vcpkg-cmake-config:x64-windows
+Architecture: x64-windows-static-md
+Multi-Arch: same
+Abi: ac1394f15b0a8c50132c4720219fa22423093233aab0bf747098b827d86497fc
+Description: The Minimalistic x86/x64 API Hooking Library for Windows.
+Status: install ok installed

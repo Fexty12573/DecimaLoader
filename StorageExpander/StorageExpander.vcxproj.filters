@@ -1,0 +1,96 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Header Files\RTTI">
+      <UniqueIdentifier>{3c5994d0-ed97-43ab-a36c-1fb5e2266017}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\RTTI">
+      <UniqueIdentifier>{a7b475bb-647c-43d0-8844-7c2585b78a64}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Memory">
+      <UniqueIdentifier>{20f96307-47b8-4124-a418-e4ffa9f5879e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Memory">
+      <UniqueIdentifier>{615318bd-e61c-4ef1-95a4-1ffaf136fecc}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="framework.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pch.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RTTI.h">
+      <Filter>Header Files\RTTI</Filter>
+    </ClInclude>
+    <ClInclude Include="RTTIObject.h">
+      <Filter>Header Files\RTTI</Filter>
+    </ClInclude>
+    <ClInclude Include="RTTIPrimitive.h">
+      <Filter>Header Files\RTTI</Filter>
+    </ClInclude>
+    <ClInclude Include="Types.h">
+      <Filter>Header Files\RTTI</Filter>
+    </ClInclude>
+    <ClInclude Include="RTTIReference.h">
+      <Filter>Header Files\RTTI</Filter>
+    </ClInclude>
+    <ClInclude Include="RTTIContainer.h">
+      <Filter>Header Files\RTTI</Filter>
+    </ClInclude>
+    <ClInclude Include="RTTIEnum.h">
+      <Filter>Header Files\RTTI</Filter>
+    </ClInclude>
+    <ClInclude Include="Memory.h">
+      <Filter>Header Files\Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="RTTIClass.h">
+      <Filter>Header Files\RTTI</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="dllmain.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="pch.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RTTI.cpp">
+      <Filter>Source Files\RTTI</Filter>
+    </ClCompile>
+    <ClCompile Include="RTTIObject.cpp">
+      <Filter>Source Files\RTTI</Filter>
+    </ClCompile>
+    <ClCompile Include="RTTIPrimitive.cpp">
+      <Filter>Source Files\RTTI</Filter>
+    </ClCompile>
+    <ClCompile Include="RTTIReference.cpp">
+      <Filter>Source Files\RTTI</Filter>
+    </ClCompile>
+    <ClCompile Include="RTTIContainer.cpp">
+      <Filter>Source Files\RTTI</Filter>
+    </ClCompile>
+    <ClCompile Include="RTTIEnum.cpp">
+      <Filter>Source Files\RTTI</Filter>
+    </ClCompile>
+    <ClCompile Include="RTTIClass.cpp">
+      <Filter>Source Files\RTTI</Filter>
+    </ClCompile>
+    <ClCompile Include="Memory.cpp">
+      <Filter>Source Files\Memory</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

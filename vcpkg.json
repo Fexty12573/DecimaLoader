@@ -1,0 +1,10 @@
+{
+    "name": "decima-framework",
+    "version": "1.0.0",
+    "description": "Decima Framework",
+    "dependencies": [
+        "minhook",
+        "nlohmann-json",
+        "spdlog"
+    ]
+}

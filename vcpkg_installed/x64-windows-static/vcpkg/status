@@ -1,0 +1,34 @@
+Package: vcpkg-cmake-config
+Version: 2022-02-06
+Port-Version: 1
+Architecture: x64-windows
+Multi-Arch: same
+Abi: df4a9415ca65c0f696961172536390ba243e6a8573900e982e514fc9cdb86a3d
+Status: install ok installed
+
+Package: vcpkg-cmake
+Version: 2023-05-04
+Architecture: x64-windows
+Multi-Arch: same
+Abi: c0f00069e8ab63041d202dfdd46e39fae013e7354d8e7f5b27f00aea56ea64f3
+Status: install ok installed
+
+Package: minhook
+Version: 1.3.3
+Port-Version: 4
+Depends: vcpkg-cmake:x64-windows, vcpkg-cmake-config:x64-windows
+Architecture: x64-windows-static
+Multi-Arch: same
+Abi: 697e0a7dc2b86aa0e185f019db88bde789e596110d51160438c7fa8e1f4fa91b
+Description: The Minimalistic x86/x64 API Hooking Library for Windows.
+Status: install ok installed
+
+Package: nlohmann-json
+Version: 3.11.3
+Depends: vcpkg-cmake:x64-windows, vcpkg-cmake-config:x64-windows
+Architecture: x64-windows-static
+Multi-Arch: same
+Abi: 250ce6395e2a5822ce678ffd995a43169bc73428dc858ce65a3f1544609a7589
+Description: JSON for Modern C++
+Status: install ok installed
+

@@ -2,6 +2,8 @@
 
 This is a basic plugin loader for Horizon Forbidden West PC.
 
+Code is currently a big mess because I was rushing this.
+
 ## Usage
 
 1. Download the latest release from the [releases page](https://github.com/Fexty12573/DecimaLoader/releases).

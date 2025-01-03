@@ -60,6 +60,9 @@
     <ClInclude Include="RTTIClass.h">
       <Filter>Header Files\RTTI</Filter>
     </ClInclude>
+    <ClInclude Include="research.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -92,5 +95,11 @@
     <ClCompile Include="Memory.cpp">
       <Filter>Source Files\Memory</Filter>
     </ClCompile>
+    <ClCompile Include="research.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
 </Project>

@@ -13,6 +13,18 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Source Files\RTTI">
+      <UniqueIdentifier>{48603cda-44a8-4fb4-83e6-6e3a5aa8d35d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\RTTI">
+      <UniqueIdentifier>{308136b0-887b-427a-85d2-53f1dca71c59}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Decima">
+      <UniqueIdentifier>{13c4031d-14a1-4d98-9952-d83ab13bb067}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Decima">
+      <UniqueIdentifier>{23de8c16-7402-4e9f-b38d-5562bc4cf534}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -27,6 +39,39 @@
     <ClInclude Include="Loader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="RTTI\RTTI.h">
+      <Filter>Header Files\RTTI</Filter>
+    </ClInclude>
+    <ClInclude Include="RTTI\RTTIClass.h">
+      <Filter>Header Files\RTTI</Filter>
+    </ClInclude>
+    <ClInclude Include="RTTI\RTTIContainer.h">
+      <Filter>Header Files\RTTI</Filter>
+    </ClInclude>
+    <ClInclude Include="RTTI\RTTIEnum.h">
+      <Filter>Header Files\RTTI</Filter>
+    </ClInclude>
+    <ClInclude Include="RTTI\RTTIObject.h">
+      <Filter>Header Files\RTTI</Filter>
+    </ClInclude>
+    <ClInclude Include="RTTI\RTTIPrimitive.h">
+      <Filter>Header Files\RTTI</Filter>
+    </ClInclude>
+    <ClInclude Include="RTTI\RTTIReference.h">
+      <Filter>Header Files\RTTI</Filter>
+    </ClInclude>
+    <ClInclude Include="Decima\String.h">
+      <Filter>Header Files\Decima</Filter>
+    </ClInclude>
+    <ClInclude Include="Decima\Types.h">
+      <Filter>Header Files\Decima</Filter>
+    </ClInclude>
+    <ClInclude Include="Decima\Array.h">
+      <Filter>Header Files\Decima</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjectDumper.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -36,6 +81,33 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="PatternScan.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RTTI\RTTI.cpp">
+      <Filter>Source Files\RTTI</Filter>
+    </ClCompile>
+    <ClCompile Include="RTTI\RTTIClass.cpp">
+      <Filter>Source Files\RTTI</Filter>
+    </ClCompile>
+    <ClCompile Include="RTTI\RTTIContainer.cpp">
+      <Filter>Source Files\RTTI</Filter>
+    </ClCompile>
+    <ClCompile Include="RTTI\RTTIEnum.cpp">
+      <Filter>Source Files\RTTI</Filter>
+    </ClCompile>
+    <ClCompile Include="RTTI\RTTIObject.cpp">
+      <Filter>Source Files\RTTI</Filter>
+    </ClCompile>
+    <ClCompile Include="RTTI\RTTIPrimitive.cpp">
+      <Filter>Source Files\RTTI</Filter>
+    </ClCompile>
+    <ClCompile Include="RTTI\RTTIReference.cpp">
+      <Filter>Source Files\RTTI</Filter>
+    </ClCompile>
+    <ClCompile Include="Decima\Types.cpp">
+      <Filter>Source Files\Decima</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjectDumper.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

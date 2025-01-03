@@ -20,6 +20,7 @@
 #define RTTI_TYPEID(TYPE)
 #endif
 
+
 #ifdef __cplusplus
 enum class RTTIKind : uint8_t {
     Primitive,
@@ -68,7 +69,14 @@ struct RTTI {
     const RTTIEnum* as_enum() const;
     const RTTIClass* as_class() const;
 
+    template<typename T> T get_constructor() const {
+        return reinterpret_cast<T>(get_constructor_impl());
+    }
+
     const char* name() const;
+
+private:
+    void* get_constructor_impl() const;
 #endif
 };
 ASSERT_SIZEOF(RTTI, 8);

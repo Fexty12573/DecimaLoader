@@ -1,9 +1,13 @@
 #pragma once
 #include <cstdint>
+#include <string_view>
 
 #include "RTTIObject.h"
 
 #ifdef __cplusplus
+
+template<typename T>
+using Ref = T*;
 
 struct String {
 private:
@@ -114,15 +118,19 @@ public:
 struct LocalizedTextResource : RTTIRefObject {
     const char* Text; //0x0020
     uint16_t Length; //0x0028
+
+    std::string_view as_view() const {
+        return { Text, Length };
+    }
 };
 
 struct InventoryItemResource : RTTIRefObject {
     void* N00000090; //0x0020
     void* EntityResourceType; //0x0028
     char pad_0030[24]; //0x0030
-    LocalizedTextResource* ItemName; //0x0048
-    LocalizedTextResource* ItemShortName; //0x0050
-    LocalizedTextResource* ItemDescription; //0x0058
+    Ref<LocalizedTextResource> ItemName; //0x0048
+    Ref<LocalizedTextResource> ItemShortName; //0x0050
+    Ref<LocalizedTextResource> ItemDescription; //0x0058
     char pad_0060[80]; //0x0060
     uint8_t N00000196; //0x00B0
     bool IsStackable; //0x00B1
@@ -148,7 +156,7 @@ ASSERT_OFFSET(InventoryItemResource, MaxStackSize, 0xB8);
 struct MsgGetMaxFitAmount : RTTIObject {
     bool N00000059; //0x0008
     char pad_0009[7]; //0x0009
-    InventoryItemResource* ItemResource; //0x0010
+    Ref<InventoryItemResource> ItemResource; //0x0010
     int32_t Amount; //0x0018
     char pad_001C[4]; //0x001C
 
@@ -158,6 +166,23 @@ struct MsgGetMaxFitAmount : RTTIObject {
             : "N/A";
     }
 }; //Size: 0x0020
+
+struct InventoryItemComponent : RTTIRefObject {
+    char pad_0008[8]; //0x0008
+    Ref<InventoryItemResource> ItemResource; //0x0010
+    char pad_0018[8]; //0x0018
+}; //Size: 0x0020
+
+struct TransactionRequirementsContainer : RTTIRefObject {
+    char pad_0020[8]; //0x0020
+    Ref<InventoryItemComponent> ItemComponent; //0x0028
+    char pad_0030[8]; //0x0030
+};
+
+struct CraftableItemComponentResource : RTTIRefObject {
+    void* IInventoryItemSettingsCreator_vtable;
+
+};
 
 #else
 

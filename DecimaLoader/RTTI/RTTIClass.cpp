@@ -28,3 +28,31 @@ bool RTTIClass::RTTIClass::instanceof(const char* type) const {
 
     return false;
 }
+
+RTTIClassField* RTTIClass::RTTIClass::find_field(const char* name) const {
+    if (!Fields) {
+        return nullptr;
+    }
+
+    for (uint8_t i = 0; i < MemberCount; ++i) {
+        if (Fields[i].Name && strcmp(Fields[i].Name, name) == 0) {
+            return &Fields[i];
+        }
+    }
+
+    return nullptr;
+}
+
+RTTIOrderedClassField* RTTIClass::RTTIClass::find_ordered_field(const char* name) const {
+    if (!OrderedFields) {
+        return nullptr;
+    }
+
+    for (uint32_t i = 0; i < OrderedFieldCount; ++i) {
+        if (OrderedFields[i].Name && strcmp(OrderedFields[i].Name, name) == 0) {
+            return &OrderedFields[i];
+        }
+    }
+
+    return nullptr;
+}

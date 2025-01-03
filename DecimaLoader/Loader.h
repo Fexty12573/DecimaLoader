@@ -9,6 +9,7 @@
 #define PLUGIN_API extern "C" __declspec(dllexport)
 
 #ifdef __cplusplus
+#ifndef LOADER_RTTI_ALREADY_DEFINED
 
 enum class RTTIKind : uint8_t {
     Primitive,
@@ -38,6 +39,10 @@ struct RTTI {
     };
 };
 
+#else
+struct RTTI;
+#endif
+
 using OnWinMain_t = void(*)();
 using OnPreRegisterType_t = void(*)(RTTI* type);
 using OnPostRegisterType_t = void(*)(RTTI* type);
@@ -53,6 +58,7 @@ struct PluginInitializeOptions {
 };
 
 #else
+#ifndef LOADER_RTTI_ALREADY_DEFINED
 
 typedef enum RTTIKind {
     RTTIKind_Primitive,
@@ -81,6 +87,10 @@ typedef struct RTTI {
         };
     };
 } RTTI;
+
+#else
+struct RTTI;
+#endif
 
 typedef void(*OnWinMain_t)();
 typedef void(*OnPreRegisterType_t)(RTTI* type);

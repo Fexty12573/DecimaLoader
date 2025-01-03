@@ -5,6 +5,7 @@
 #include <iostream>
 #include <unordered_set>
 #include <thread>
+#include <print>
 
 #include <MinHook.h>
 #include <nlohmann/json.hpp>
@@ -23,6 +24,7 @@
 #define LOADER_NO_DEFINE_RTTI
 #include "Loader.h"
 #include "Memory.h"
+#include "research.h"
 
 #define DLL_MODE_LOAD
 // #define DLL_MODE_DUMP
@@ -325,10 +327,21 @@ std::ostream& operator<<(std::ostream& os, const GUID& g) {
     return os;
 }
 
+template<>
+struct std::formatter<GUID> : std::formatter<std::string> {
+    template<typename FormatContext>
+    auto format(const GUID& g, FormatContext& ctx) const {
+        return std::formatter<std::string>::format(std::format("{:08X}-{:04X}-{:04X}-{:02X}{:02X}-{:02X}{:02X}{:02X}{:02X}{:02X}{:02X}",
+            g.Data1, g.Data2, g.Data3, g.Data4[0], g.Data4[1], g.Data4[2], g.Data4[3], g.Data4[4], g.Data4[5], g.Data4[6], g.Data4[7]), ctx);
+    }
+};
+
 namespace {
 
-RTTIClass* iic_rtti = nullptr;
+RTTIClass* icc_rtti = nullptr;
 std::unordered_map<GUID, std::vector<int>> stack_sizes;
+std::vector<RTTI*> all_types;
+std::ofstream log("deserializer_log.txt");
 
 void(*handle_get_amount)(void* p, MsgGetMaxFitAmount* msg) = nullptr;
 void handle_get_amount_hook(void* p, MsgGetMaxFitAmount* msg) {
@@ -361,16 +374,40 @@ void handle_get_amount_hook(void* p, MsgGetMaxFitAmount* msg) {
     return handle_get_amount(p, msg);
 }
 
+int(*read_object)(void* reader, RTTIObject** pobj) = nullptr;
+int read_object_hook(void* reader, RTTIObject** pobj) {
+    const int result = read_object(reader, pobj);
+    if (result == 0 && pobj && *pobj) {
+        RTTIObject* obj = *pobj;
+        const auto rtti = obj->get_rtti();
+        if (rtti->Kind == RTTIKind::Class && rtti->as_class()->instanceof("RTTIRefObject")) {
+            const auto ref_obj = (RTTIRefObject*)obj;
+            std::println(log, "Deserialized Object [{}]: {}", rtti->name(), ref_obj->ObjectUUID);
+        } else {
+            std::println(log, "Deserialized Object [{}]", rtti->name());
+        }
+    }
+
+    return result;
+}
+
 void on_register_type(RTTI* rtti) {
+    all_types.push_back(rtti);
+
+    if (rtti && rtti->Kind == RTTIKind::Container) {
+        const auto* container = rtti->as_container();
+        std::println(log, "Registered Container: {}", container->Name);
+    }
+
     if (rtti && rtti->Kind == RTTIKind::Class && strcmp(rtti->name(), "InventoryCapacityComponent") == 0) {
-        iic_rtti = rtti->as_class();
+        icc_rtti = rtti->as_class();
 
 #ifdef _DEBUG
         std::cout << "Found InventoryCapacityComponent RTTI\n" << std::flush;
 #endif
 
-        for (uint8_t i = 0; i < iic_rtti->MessageHandlerCount; ++i) {
-            const auto& handler = iic_rtti->MessageHandlers[i];
+        for (uint8_t i = 0; i < icc_rtti->MessageHandlerCount; ++i) {
+            const auto& handler = icc_rtti->MessageHandlers[i];
             if (handler.MessageType->Kind == RTTIKind::Class &&
                 strcmp(handler.MessageType->as_class()->Name, "MsgGetMaxFitAmount") == 0) {
                 // Hook the handler
@@ -382,21 +419,93 @@ void on_register_type(RTTI* rtti) {
 #endif
             }
         }
+    } else if (rtti && strcmp(rtti->name(), "InventoryItemComponent") == 0) {
+        const auto* iic_rtti = rtti->as_class();
+        for (uint8_t i = 0; i < iic_rtti->MessageHandlerCount; ++i) {
+            const auto& handler = iic_rtti->MessageHandlers[i];
+            if (handler.MessageType->Kind == RTTIKind::Class &&
+                strcmp(handler.MessageType->as_class()->Name, "MsgEntityInit") == 0) {
+                // Hook the handler
+                //MH_CreateHook(handler.Handler, (void*)&handle_get_amount_hook, (void**)&handle_get_amount);
+                //MH_EnableHook(handler.Handler);
+            }
+        }
     }
+}
+
+void on_post_register_all_types() {
+    //research::init(all_types);
+
+    constexpr uintptr_t standard_module_base = 0x140000000;
+    uintptr_t module_base = (uintptr_t)GetModuleHandleA(nullptr);
+
+    nlohmann::json j = nlohmann::json::array();
+    std::ofstream out("rtti.json");
+
+    const auto as_json = [module_base, standard_module_base](RTTI* rtti) {
+        nlohmann::json obj = {
+            { "Address", (uintptr_t)rtti - module_base + standard_module_base }
+        };
+
+        switch (rtti->Kind) {
+        case RTTIKind::Primitive:
+            obj["Kind"] = RTTIPrimitive::TypeName;
+            obj["Name"] = rtti->as_primitive()->Name;
+            break;
+        case RTTIKind::Reference:
+            obj["Kind"] = RTTIReference::TypeName;
+            obj["Name"] = rtti->as_reference()->Name;
+            break;
+        case RTTIKind::Container:
+            obj["Kind"] = RTTIContainer::TypeName;
+            obj["Name"] = rtti->as_container()->Name;
+            break;
+        case RTTIKind::Enum:
+            obj["Kind"] = RTTIEnum::TypeName;
+            obj["Name"] = rtti->as_enum()->Name;
+            break;
+        case RTTIKind::Class:
+            obj["Kind"] = RTTIClass::TypeName;
+            obj["Name"] = rtti->as_class()->Name;
+            break;
+        default:
+            obj["Kind"] = "Unknown";
+            obj["Name"] = "Unknown";
+            break;
+        }
+
+        return obj;
+    };
+
+    for (const auto r : ::all_types) {
+        j.emplace_back(as_json(r));
+    }
+
+    out << j.dump(4);
+    out.flush();
+
+    exit(0);
 }
 
 }
 
 PLUGIN_API void plugin_initialize(PluginInitializeOptions* options) {
     options->OnPostRegisterType = ::on_register_type;
+    //options->OnPostRegisterAllTypes = ::on_post_register_all_types;
 
-#ifdef _DEBUG
-    AllocConsole();
-    freopen_s((FILE**)stdout, "CONOUT$", "w", stdout);
-#endif
+//#ifndef _DEBUG
+//    AllocConsole();
+//    freopen_s((FILE**)stdout, "CONOUT$", "w", stdout);
+//#endif
 
     MH_Initialize();
 
+    std::println("Image Base: {:p}", (void*)GetModuleHandleA(nullptr));
+
+    //const auto hook_addr = (void*)0x140698810;
+    //MH_CreateHook(hook_addr, (void*)&read_object_hook, (void**)&read_object);
+    //MH_EnableHook(hook_addr);
+    
     // Load the Data file
     if (!std::filesystem::exists("plugins/stack_sizes.json")) {
         MessageBoxA(nullptr, "stack_sizes.json not found", "RTTI Dumper", MB_OK);
